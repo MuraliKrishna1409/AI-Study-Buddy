@@ -2,6 +2,7 @@ from summarizer import summarize_text
 from flashcard_generator import generate_flashcards
 from quiz_generator import generate_quiz
 from history import save_history
+from pdf_reader import extract_text_from_pdf
 
 while True:
 
@@ -10,7 +11,8 @@ while True:
     print("2. Generate Flashcards")
     print("3. Generate Quiz")
     print("4. View History")
-    print("5. Exit")
+    print("5. Summarize PDF")
+    print("6. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -84,6 +86,29 @@ while True:
             print("No history found.")
 
     elif choice == "5":
+
+        pdf_path = input("\nEnter PDF file name: ")
+
+        text = extract_text_from_pdf(pdf_path)
+
+        if text.startswith("Error"):
+            print(text)
+
+        else:
+
+            summary = summarize_text(text)
+
+            print("\n===== PDF SUMMARY =====")
+            print(summary)
+
+            save_history("Generated PDF Summary")
+
+            with open("summary.txt", "w", encoding="utf-8") as file:
+                file.write(summary)
+
+            print("\nSummary saved to summary.txt")
+
+    elif choice == "6":
 
         print("\nThank you for using AI Study Buddy!")
         break
