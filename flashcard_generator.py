@@ -1,9 +1,20 @@
-def generate_flashcards(topic):
+def generate_flashcards(text):
+    """
+    Generates conceptual flashcards from summary text.
+    """
 
-    flashcards = [
-        (f"What is {topic}?", f"{topic} is an important concept."),
-        (f"Why is {topic} useful?", f"{topic} helps solve problems efficiently."),
-        (f"Where is {topic} used?", f"{topic} is used in many real-world applications.")
-    ]
+    sentences = text.split(".")
+    flashcards = []
+
+    for s in sentences:
+        s = s.strip()
+
+        if len(s) > 40:
+            question = "What is the concept of: " + s[:40] + "?"
+            answer = s
+            flashcards.append((question, answer))
+
+    if not flashcards:
+        flashcards.append(("No flashcards generated", "Try better input text"))
 
     return flashcards

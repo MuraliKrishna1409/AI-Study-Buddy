@@ -1,21 +1,38 @@
-def generate_quiz(topic):
+import random
 
-    quiz = [
-        {
-            "question": f"What does {topic} stand for?",
-            "options": ["Option A", "Option B", "Option C", "Option D"],
-            "answer": "Option A"
-        },
-        {
-            "question": f"Why is {topic} important?",
-            "options": [
-                "Entertainment",
-                "Problem Solving",
-                "Decoration",
-                "Gaming"
-            ],
-            "answer": "Problem Solving"
-        }
-    ]
+def generate_quiz(text):
+    """
+    Generates simple MCQ-style quiz from summary text.
+    """
+
+    sentences = [s.strip() for s in text.split(".") if len(s.strip()) > 40]
+    quiz = []
+
+    for s in sentences[:5]:
+
+        correct = s
+
+        # fake options (simple distractors)
+        options = [
+            correct,
+            "Not related concept",
+            "Opposite idea",
+            "Unrelated statement"
+        ]
+
+        random.shuffle(options)
+
+        quiz.append({
+            "question": "What does the following describe?",
+            "options": options,
+            "answer": correct
+        })
+
+    if not quiz:
+        quiz.append({
+            "question": "No quiz generated",
+            "options": ["N/A"],
+            "answer": "N/A"
+        })
 
     return quiz
