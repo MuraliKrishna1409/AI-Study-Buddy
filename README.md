@@ -1,5 +1,6 @@
 # AI Study Buddy
 
+
 ## Overview
 
 AI Study Buddy is a Python-based educational assistant designed to help students learn more efficiently. The application can summarize study notes, generate flashcards for revision, create quiz questions for self-assessment, and maintain a history of user activities with timestamps.
@@ -7,6 +8,14 @@ AI Study Buddy is a Python-based educational assistant designed to help students
 This project was developed as a beginner-friendly Generative AI project to demonstrate practical Python programming, modular software development, and educational technology concepts.
 
 ---
+
+## 🧠 AI Study Buddy
+
+AI Study Buddy is a Python-based learning assistant that helps students:
+- Summarize notes
+- Generate flashcards
+- Create quizzes
+- Extract and process PDF content
 
 ## Features
 
@@ -32,6 +41,14 @@ This project was developed as a beginner-friendly Generative AI project to demon
 * Records user actions with timestamps.
 * Maintains a log of generated summaries, flashcards, and quizzes.
 * Allows users to view previous activities.
+
+## 📅 Project Progress
+
+### Day 6
+- Integrated PDF reading functionality
+- Added PDF-based summarization support
+- Improved input handling for document-based learning
+- Pushed stable version to GitHub
 
 ---
 
