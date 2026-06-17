@@ -1,16 +1,19 @@
+from gemini_helper import ask_gemini
+
+
 def summarize_text(text):
+
+    prompt = f"""
+    Summarize the following study material.
+
+    Include:
+
+    1. Short Summary
+    2. Key Points
+    3. Important Exam Notes
+
+    Text:
+    {text[:10000]}
     """
-    Simple extractive-style summarizer (safe fallback version).
-    Works for both small and chunked inputs.
-    """
 
-    sentences = text.split(".")
-    sentences = [s.strip() for s in sentences if len(s.strip()) > 30]
-
-    # Take top meaningful sentences (simple heuristic)
-    summary = ". ".join(sentences[:5])
-
-    if not summary:
-        return "Unable to generate summary."
-
-    return summary
+    return ask_gemini(prompt)

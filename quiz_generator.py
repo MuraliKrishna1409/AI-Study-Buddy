@@ -1,38 +1,58 @@
-import random
+from gemini_helper import ask_gemini
+import re
+
 
 def generate_quiz(text):
-    """
-    Generates simple MCQ-style quiz from summary text.
+
+    prompt = f"""
+    Generate 5 MCQs.
+
+    Format EXACTLY:
+
+    Question: ...
+
+    A) ...
+    B) ...
+    C) ...
+    D) ...
+
+    Answer: A
+
+    Text:
+    {text[:10000]}
     """
 
-    sentences = [s.strip() for s in text.split(".") if len(s.strip()) > 40]
+    result = ask_gemini(prompt)
+
     quiz = []
 
-    for s in sentences[:5]:
+    blocks = result.split("Question:")
 
-        correct = s
+    for block in blocks[1:]:
 
-        # fake options (simple distractors)
-        options = [
-            correct,
-            "Not related concept",
-            "Opposite idea",
-            "Unrelated statement"
-        ]
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
 
-        random.shuffle(options)
+        if len(lines) < 6:
+            continue
+
+        question = lines[0]
+
+        options = []
+
+        answer = ""
+
+        for line in lines[1:]:
+
+            if line.startswith(("A)", "B)", "C)", "D)")):
+                options.append(line)
+
+            elif line.startswith("Answer:"):
+                answer = line.replace("Answer:", "").strip()
 
         quiz.append({
-            "question": "What does the following describe?",
+            "question": question,
             "options": options,
-            "answer": correct
-        })
-
-    if not quiz:
-        quiz.append({
-            "question": "No quiz generated",
-            "options": ["N/A"],
-            "answer": "N/A"
+            "answer": answer
         })
 
     return quiz

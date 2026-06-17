@@ -1,20 +1,35 @@
+from gemini_helper import ask_gemini
+import re
+
+
 def generate_flashcards(text):
-    """
-    Generates conceptual flashcards from summary text.
+
+    prompt = f"""
+    Generate 10 flashcards.
+
+    Format EXACTLY like:
+
+    Q: question
+    A: answer
+
+    Q: question
+    A: answer
+
+    Text:
+    {text[:10000]}
     """
 
-    sentences = text.split(".")
+    result = ask_gemini(prompt)
+
     flashcards = []
 
-    for s in sentences:
-        s = s.strip()
+    pattern = r"Q:\s*(.*?)\nA:\s*(.*?)(?=\nQ:|\Z)"
 
-        if len(s) > 40:
-            question = "What is the concept of: " + s[:40] + "?"
-            answer = s
-            flashcards.append((question, answer))
+    matches = re.findall(pattern, result, re.DOTALL)
 
-    if not flashcards:
-        flashcards.append(("No flashcards generated", "Try better input text"))
+    for q, a in matches:
+        flashcards.append(
+            (q.strip(), a.strip())
+        )
 
     return flashcards
