@@ -6,6 +6,12 @@ from summarizer import summarize_text
 from flashcard_generator import generate_flashcards
 from quiz_generator import generate_quiz
 
+from history import (
+    save_history,
+    read_history,
+    clear_history
+)
+
 
 # ---------------- TEXT CLEANING ----------------
 
@@ -22,6 +28,19 @@ st.set_page_config(
     layout="wide"
 )
 
+
+# ---------------- SESSION STATE ----------------
+
+if "summary" not in st.session_state:
+    st.session_state.summary = ""
+
+if "flashcards" not in st.session_state:
+    st.session_state.flashcards = []
+
+if "quiz" not in st.session_state:
+    st.session_state.quiz = []
+
+
 # ---------------- HEADER ----------------
 
 st.title("🧠 AI Study Buddy")
@@ -29,13 +48,37 @@ st.write(
     "Upload your study notes and generate AI-powered summaries, flashcards, and quizzes."
 )
 
+
 # ---------------- SIDEBAR ----------------
 
 with st.sidebar:
+
     st.header("About")
+
     st.write(
         "AI Study Buddy helps students quickly understand study materials using Gemini AI."
     )
+
+    st.markdown("---")
+
+    st.subheader("Recent History")
+
+    history = read_history()
+
+    if history:
+
+        for item in reversed(history[-10:]):
+            st.text(item.strip())
+
+    else:
+        st.write("No history available.")
+
+    st.markdown("---")
+
+    if st.button("🗑 Clear History"):
+        clear_history()
+        st.rerun()
+
 
 # ---------------- FILE UPLOAD ----------------
 
@@ -43,6 +86,7 @@ pdf_file = st.file_uploader(
     "📂 Upload PDF",
     type=["pdf"]
 )
+
 
 # ---------------- FEATURE SELECTION ----------------
 
@@ -63,7 +107,8 @@ quiz_selected = st.checkbox(
     value=True
 )
 
-# ---------------- PROCESS BUTTON ----------------
+
+# ---------------- GENERATE BUTTON ----------------
 
 if pdf_file is not None:
 
@@ -74,97 +119,152 @@ if pdf_file is not None:
             or flashcards_selected
             or quiz_selected
         ):
-            st.warning("Please select at least one feature.")
+            st.warning(
+                "Please select at least one feature."
+            )
             st.stop()
 
         with st.spinner("Processing PDF..."):
 
-            # Save uploaded PDF temporarily
             with open("temp.pdf", "wb") as f:
                 f.write(pdf_file.read())
 
-            # Extract text
-            text = extract_text_from_pdf("temp.pdf")
+            text = extract_text_from_pdf(
+                "temp.pdf"
+            )
 
             if text.startswith("Error"):
                 st.error(text)
                 st.stop()
 
-            # Clean extracted text
             text = clean_text(text)
 
-            # Generate summary
-            summary = summarize_text(text[:10000])
+            summary = summarize_text(
+                text[:10000]
+            )
 
             if summary.startswith("ERROR:"):
                 st.error(summary)
                 st.stop()
 
-            # ---------------- SUMMARY ----------------
+            st.session_state.summary = summary
 
             if summary_selected:
-                st.subheader("📄 Summary")
-                st.write(summary)
-
-            # ---------------- FLASHCARDS ----------------
+                save_history(
+                    "Summary generated"
+                )
 
             if flashcards_selected:
 
-                flashcards = generate_flashcards(summary)
+                flashcards = generate_flashcards(
+                    summary
+                )
 
-                st.subheader("🧾 Flashcards")
+                st.session_state.flashcards = (
+                    flashcards
+                )
 
-                if flashcards:
-                    for i, (q, a) in enumerate(
-                        flashcards,
-                        start=1
-                    ):
-                        with st.expander(f"Flashcard {i}"):
-                            st.markdown(
-                                f"**Question:** {q}"
-                            )
-                            st.markdown(
-                                f"**Answer:** {a}"
-                            )
-                else:
-                    st.warning(
-                        "No flashcards generated."
-                    )
-
-            # ---------------- QUIZ ----------------
+                save_history(
+                    "Flashcards generated"
+                )
 
             if quiz_selected:
 
-                quiz = generate_quiz(summary)
+                quiz = generate_quiz(
+                    summary
+                )
 
-                st.subheader("❓ Quiz")
+                st.session_state.quiz = quiz
 
-                if quiz:
-                    for i, q in enumerate(
-                        quiz,
-                        start=1
-                    ):
-                        st.markdown(
-                            f"### Q{i}. {q['question']}"
-                        )
+                save_history(
+                    "Quiz generated"
+                )
 
-                        for option in q["options"]:
-                            st.write(option)
 
-                        st.success(
-                            f"Answer: {q['answer']}"
-                        )
+# ---------------- SUMMARY ----------------
 
-                        st.markdown("---")
-                else:
-                    st.warning(
-                        "No quiz generated."
-                    )
+if (
+    summary_selected
+    and st.session_state.summary
+):
 
-else:
+    st.subheader("📄 Summary")
+
+    st.write(
+        st.session_state.summary
+    )
+
+    st.download_button(
+        label="⬇ Download Summary",
+        data=st.session_state.summary,
+        file_name="summary.txt",
+        mime="text/plain"
+    )
+
+
+# ---------------- FLASHCARDS ----------------
+
+if (
+    flashcards_selected
+    and st.session_state.flashcards
+):
+
+    st.subheader("🧾 Flashcards")
+
+    for i, (q, a) in enumerate(
+        st.session_state.flashcards,
+        start=1
+    ):
+
+        with st.expander(
+            f"Flashcard {i}"
+        ):
+
+            st.markdown(
+                f"**Question:** {q}"
+            )
+
+            st.markdown(
+                f"**Answer:** {a}"
+            )
+
+
+# ---------------- QUIZ ----------------
+
+if (
+    quiz_selected
+    and st.session_state.quiz
+):
+
+    st.subheader("❓ Quiz")
+
+    for i, q in enumerate(
+        st.session_state.quiz,
+        start=1
+    ):
+
+        st.markdown(
+            f"### Q{i}. {q['question']}"
+        )
+
+        for option in q["options"]:
+            st.write(option)
+
+        st.success(
+            f"Answer: {q['answer']}"
+        )
+
+        st.markdown("---")
+
+
+# ---------------- EMPTY STATE ----------------
+
+if pdf_file is None:
+
     st.info(
         "Please upload a PDF to begin."
     )
+
 
 # ---------------- FOOTER ----------------
 
