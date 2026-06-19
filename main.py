@@ -1,3 +1,7 @@
+# Legacy CLI version.
+# Active development continues in Streamlit app (app.py).
+
+
 from summarizer import summarize_text
 from flashcard_generator import generate_flashcards
 from quiz_generator import generate_quiz

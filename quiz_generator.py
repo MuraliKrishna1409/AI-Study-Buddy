@@ -5,54 +5,71 @@ import re
 def generate_quiz(text):
 
     prompt = f"""
-    Generate 5 MCQs.
+You are an expert examiner.
 
-    Format EXACTLY:
+Generate exactly 5 multiple-choice questions.
 
-    Question: ...
+Rules:
+- Questions should test understanding.
+- Avoid trivial facts.
+- Provide 4 options.
+- Mark the correct answer.
 
-    A) ...
-    B) ...
-    C) ...
-    D) ...
+Format exactly:
 
-    Answer: A
+Q: Question
 
-    Text:
-    {text[:10000]}
-    """
+A) Option
+B) Option
+C) Option
+D) Option
 
-    result = ask_gemini(prompt)
+Answer: A
 
-    quiz = []
+Study Material:
 
-    blocks = result.split("Question:")
+{text}
+"""
+
+    response = ask_gemini(prompt)
+
+    questions = []
+
+    blocks = response.split("Q:")
 
     for block in blocks[1:]:
 
-        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        lines = [
+            line.strip()
+            for line in block.strip().split("\n")
+            if line.strip()
+        ]
 
-        if len(lines) < 6:
+        try:
+
+            question = lines[0]
+
+            options = [
+                lines[1],
+                lines[2],
+                lines[3],
+                lines[4]
+            ]
+
+            answer = lines[5].replace(
+                "Answer:",
+                ""
+            ).strip()
+
+            questions.append(
+                {
+                    "question": question,
+                    "options": options,
+                    "answer": answer
+                }
+            )
+
+        except:
             continue
 
-        question = lines[0]
-
-        options = []
-
-        answer = ""
-
-        for line in lines[1:]:
-
-            if line.startswith(("A)", "B)", "C)", "D)")):
-                options.append(line)
-
-            elif line.startswith("Answer:"):
-                answer = line.replace("Answer:", "").strip()
-
-        quiz.append({
-            "question": question,
-            "options": options,
-            "answer": answer
-        })
-
-    return quiz
+    return questions

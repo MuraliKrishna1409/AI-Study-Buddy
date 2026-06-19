@@ -1,35 +1,43 @@
 from gemini_helper import ask_gemini
-import re
 
 
 def generate_flashcards(text):
 
     prompt = f"""
-    Generate 10 flashcards.
+You are an expert educator.
 
-    Format EXACTLY like:
+Generate exactly 10 high-quality flashcards from the study material.
 
-    Q: question
-    A: answer
+Rules:
+- Focus on concepts, not memorization.
+- Questions should help students revise for exams.
+- Answers should be short and precise.
+- Format strictly:
 
-    Q: question
-    A: answer
+Q: Question
+A: Answer
 
-    Text:
-    {text[:10000]}
-    """
+Study Material:
 
-    result = ask_gemini(prompt)
+{text}
+"""
+
+    response = ask_gemini(prompt)
 
     flashcards = []
 
-    pattern = r"Q:\s*(.*?)\nA:\s*(.*?)(?=\nQ:|\Z)"
+    lines = response.split("\n")
 
-    matches = re.findall(pattern, result, re.DOTALL)
+    question = None
 
-    for q, a in matches:
-        flashcards.append(
-            (q.strip(), a.strip())
-        )
+    for line in lines:
+
+        if line.startswith("Q:"):
+            question = line.replace("Q:", "").strip()
+
+        elif line.startswith("A:") and question:
+            answer = line.replace("A:", "").strip()
+            flashcards.append((question, answer))
+            question = None
 
     return flashcards
