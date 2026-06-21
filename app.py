@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.write("API Key Exists:", "GEMINI_API_KEY" in st.secrets)
+
 st.set_page_config(
     page_title="AI Study Buddy",
     page_icon="🧠",
