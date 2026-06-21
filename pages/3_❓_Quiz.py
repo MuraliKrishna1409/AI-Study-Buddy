@@ -39,6 +39,8 @@ if quiz:
 
     output = ""
 
+    answer_key = "\n\n===== ANSWER KEY =====\n\n"
+
     for i, q in enumerate(
         quiz,
         start=1
@@ -49,17 +51,20 @@ if quiz:
         )
 
         st.radio(
-            "Choose",
+            "Choose your answer:",
             q["options"],
             key=f"quiz_{i}"
         )
 
-        st.success(
-            f"Answer: {q['answer']}"
-        )
+        with st.expander(
+            "Show Answer"
+        ):
+            st.write(
+                q["answer"]
+            )
 
         output += (
-            f"{q['question']}\n"
+            f"Q{i}. {q['question']}\n"
         )
 
         for option in q["options"]:
@@ -67,9 +72,13 @@ if quiz:
                 option + "\n"
             )
 
-        output += (
-            f"Answer: {q['answer']}\n\n"
+        output += "\n"
+
+        answer_key += (
+            f"Q{i}: {q['answer']}\n"
         )
+
+    output += answer_key
 
     st.download_button(
         "⬇ Download Quiz",

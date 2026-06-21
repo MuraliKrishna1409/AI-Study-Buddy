@@ -1,5 +1,4 @@
 from gemini_helper import ask_gemini
-import re
 
 
 def generate_quiz(text):
@@ -7,22 +6,24 @@ def generate_quiz(text):
     prompt = f"""
 You are an expert examiner.
 
-Generate exactly 5 multiple-choice questions.
+Generate exactly 5 multiple-choice questions based on the study material.
 
 Rules:
 - Questions should test understanding.
 - Avoid trivial facts.
-- Provide 4 options.
+- Each question must have exactly 4 options.
+- Only one option should be correct.
 - Mark the correct answer.
+- Follow the format exactly.
 
-Format exactly:
+Format:
 
-Q: Question
+Q: Question text
 
-A) Option
-B) Option
-C) Option
-D) Option
+A) Option 1
+B) Option 2
+C) Option 3
+D) Option 4
 
 Answer: A
 
@@ -69,7 +70,7 @@ Study Material:
                 }
             )
 
-        except:
+        except Exception:
             continue
 
     return questions
