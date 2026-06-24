@@ -11,3 +11,5 @@ quiz.txt
 temp.pdf
 
 .streamlit/
+*.pdf
+temp.pdf
