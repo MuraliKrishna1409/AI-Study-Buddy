@@ -1,16 +1,15 @@
 import streamlit as st
 
-st.write("API Key Exists:", "GEMINI_API_KEY" in st.secrets)
-
 st.set_page_config(
-    page_title="AI Study Buddy",
-    page_icon="🧠",
-    layout="wide"
+page_title="AI Study Buddy",
+page_icon="🧠",
+layout="wide"
 )
 
 st.title("🧠 AI Study Buddy")
 
 st.markdown("""
+
 ### AI-Powered Learning Assistant
 
 Upload study materials and instantly generate:
@@ -24,11 +23,12 @@ Upload study materials and instantly generate:
 ✅ Study History
 
 Built using:
-- Python
-- Streamlit
-- Google Gemini AI
-- PyPDF2
-""")
+
+* Python
+* Streamlit
+* Google Gemini AI
+* PyPDF2
+  """)
 
 col1, col2, col3 = st.columns(3)
 

@@ -1,126 +1,138 @@
-# 📚 AI Study Buddy v1.0
+# 🧠 AI Study Buddy
 
-AI Study Buddy is a Generative AI-powered learning assistant that helps students convert study materials into concise summaries, revision flashcards, and interactive quizzes.
+AI Study Buddy is an intelligent learning assistant that transforms PDF study material into concise summaries, revision flashcards, and practice quizzes using Google's Gemini AI.
 
-Built using Python, Streamlit, and Google's Gemini API, the application simplifies studying by automatically extracting information from PDF documents and generating personalized learning resources.
+The project is designed to help students reduce study time, improve retention, and prepare efficiently for examinations through AI-powered content generation.
 
 ---
 
 ## 🚀 Features
 
-### 📄 PDF Upload & Text Extraction
+### 📄 PDF Processing
 
-* Upload study materials in PDF format.
-* Automatically extract and process text content.
-* Supports document-based learning workflows.
+* Upload PDF study material directly through the web interface
+* Extract and process text automatically using PyPDF2
+* Supports academic notes, lecture materials, and study guides
 
-### 📝 AI-Powered Summarization
+### 📝 AI-Powered Summaries
 
-* Generate concise summaries from lengthy study materials.
-* Focus on key concepts and important information.
-* Improve revision efficiency.
+* Generates concise and exam-focused summaries
+* Highlights key concepts, definitions, and important points
+* Removes redundant information for faster revision
 
-### 🎴 Flashcard Generation
+### 🃏 Flashcard Generation
 
-* Automatically create question-answer flashcards.
-* Designed for active recall and spaced repetition.
-* Useful for quick revision sessions.
+* Automatically creates revision flashcards
+* Question-and-answer format for active recall learning
+* Designed to improve memory retention
 
 ### ❓ Quiz Generation
 
-* Generate multiple-choice questions from study content.
-* Interactive quiz interface using Streamlit.
-* Hidden answer reveal option for self-assessment.
+* Generates multiple-choice questions from study material
+* Includes answer keys for self-assessment
+* Helps evaluate conceptual understanding
 
-### 🕒 History Tracking
+### 📜 Study History
 
-* Records user activities with timestamps.
-* Tracks generated summaries, flashcards, and quizzes.
-* Provides a history page for reviewing past actions.
+* Maintains a history of generated content
+* Allows users to track study activities
+* Supports clearing history when required
 
-### 💾 Download Support
+### ⬇ Export Functionality
 
-* Download generated summaries.
-* Download flashcards for offline study.
-* Download quizzes and answer keys.
+* Download generated summaries
+* Download flashcards
+* Download quizzes for offline study
+
+### 🎨 User-Friendly Interface
+
+* Multi-page Streamlit dashboard
+* Simple and responsive UI
+* Session state management for seamless navigation
 
 ---
 
-## 🏗️ Project Architecture
+## 🏗 System Architecture
+
+PDF Upload
+↓
+Text Extraction (PyPDF2)
+↓
+Content Processing
+↓
+Google Gemini AI
+↓
+├── Summary Generation
+├── Flashcard Generation
+└── Quiz Generation
+↓
+Display & Download
+
+---
+
+## 🛠 Technology Stack
+
+| Category               | Technologies     |
+| ---------------------- | ---------------- |
+| Programming Language   | Python           |
+| Frontend/UI            | Streamlit        |
+| Generative AI          | Google Gemini AI |
+| PDF Processing         | PyPDF2           |
+| Environment Management | python-dotenv    |
+| Version Control        | Git & GitHub     |
+
+---
+
+## 📂 Project Structure
 
 ```text
 AI-Study-Buddy/
-│
+
 ├── app.py
 ├── gemini_helper.py
-├── pdf_reader.py
 ├── summarizer.py
 ├── flashcard_generator.py
 ├── quiz_generator.py
+├── pdf_reader.py
 ├── history.py
 ├── requirements.txt
-│
+├── .gitignore
+
 ├── pages/
-│   ├── Summary.py
-│   ├── Flashcards.py
-│   ├── Quiz.py
-│   └── History.py
-│
+│   ├── 1_📝_Summary.py
+│   ├── 2_🃏_Flashcards.py
+│   ├── 3_❓_Quiz.py
+│   └── 4_📜_History.py
+
 └── README.md
 ```
 
 ---
 
-## 🛠️ Tech Stack
-
-### Frontend
-
-* Streamlit
-
-### Backend
-
-* Python
-
-### AI & NLP
-
-* Google Gemini API
-
-### Libraries
-
-* PyPDF2
-* python-dotenv
-
-### Version Control
-
-* Git
-* GitHub
-
----
-
 ## ⚙️ Installation
 
-### Clone the Repository
+### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/your-username/AI-Study-Buddy.git
 cd AI-Study-Buddy
 ```
 
-### Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Configure Environment Variables
+### 3. Configure Gemini API
 
-Create a `.env` file:
+Create a `.env` file in the project root:
 
 ```env
-GEMINI_API_KEY=your_api_key_here
+GEMINI_API_KEY=YOUR_API_KEY
 ```
 
-### Run the Application
+### 4. Launch Application
 
 ```bash
 streamlit run app.py
@@ -128,63 +140,68 @@ streamlit run app.py
 
 ---
 
-## 📖 How to Use
+## 📖 Usage
 
-1. Launch the Streamlit application.
-2. Upload a PDF document.
-3. Generate a summary of the content.
-4. Create flashcards for revision.
-5. Generate quiz questions for self-assessment.
-6. Download generated study materials.
-7. Review activity history from the History page.
+1. Launch the application.
+2. Navigate to the Summary page.
+3. Upload a PDF document.
+4. Generate an AI-powered summary.
+5. Create flashcards from the generated content.
+6. Generate practice quizzes.
+7. Download outputs for offline revision.
 
 ---
 
 ## 🎯 Learning Outcomes
 
-This project demonstrates practical experience with:
+This project demonstrates practical experience in:
 
-* Python Application Development
-* Generative AI Integration
-* Prompt Engineering
-* Streamlit Web Applications
-* PDF Processing
-* Session State Management
-* Modular Software Design
-* Git & GitHub Workflow
-* API Integration
-* Educational Technology Development
+* Generative AI integration
+* Prompt engineering
+* Python application development
+* Streamlit dashboard development
+* PDF document processing
+* Session state management
+* API integration
+* Software project structuring
+* Git and GitHub workflows
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Future Enhancements
 
-* Multi-language support
-* Advanced quiz scoring system
+* DOCX and PPT support
+* Difficulty-based quiz generation
 * User authentication
 * Cloud database integration
-* OCR support for scanned PDFs
-* Personalized learning analytics
-* Difficulty-based quiz generation
+* Personalized study recommendations
+* PDF export functionality
+* Performance analytics dashboard
 
 ---
 
 ## 👨‍💻 Author
 
-**S. Murali Krishna**
+Murali Krishna
 
 Computer Science Engineering Student
 
-### Project
-
-AI Study Buddy v1.0
-
-### Academic Year
-
-2025–2026
+Passionate about Artificial Intelligence, Cloud Computing, and Software Development.
 
 ---
 
-## 📄 License
+## ⭐ Project Status
 
-This project is intended for educational and learning purposes.
+Version: 1.0
+
+Status: Completed and Functional
+
+Current Features:
+
+* PDF Upload
+* AI Summary Generation
+* Flashcard Generation
+* Quiz Generation
+* Study History
+* Download Support
+* Multi-Page Dashboard
