@@ -5,6 +5,27 @@ AI Study Buddy is an intelligent learning assistant that transforms PDF study ma
 The project is designed to help students reduce study time, improve retention, and prepare efficiently for examinations through AI-powered content generation.
 
 ---
+## 📸 Application Screenshots
+
+### Home Page
+
+![Home Page](assets/home.png)
+
+### Summary Generation
+
+![Summary Generation](assets/summary.png)
+
+### Flashcard Generation
+
+![Flashcards](assets/flashcards.png)
+
+### Quiz Generation
+
+![Quiz](assets/quiz.png)
+
+### History Tracking
+
+![History](assets/history.png)
 
 ## 🚀 Features
 
@@ -114,7 +135,7 @@ AI-Study-Buddy/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/AI-Study-Buddy.git
+git clone https://github.com/MuraliKrishna1409/AI-Study-Buddy.git
 cd AI-Study-Buddy
 ```
 
